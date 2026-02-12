@@ -1,0 +1,43 @@
+/* Description: SQL script to create and populate DEPARTMENT and COURSE tables, including constraints, sample data, and queries for retrieval and cleanup.
+*/
+CREATE TABLE DEPARTMENT(
+	name		VARCHAR(50)		NOT NULL,
+	code		CHAR(5)			NOT NULL,
+	total_staff	DECIMAL(2)		NOT NULL,
+	chair		VARCHAR(50)		NULL,
+	budget		DECIMAL(9,1)	NULL,
+	CONSTRAINT DEPARTMENT_PKEY PRIMARY KEY(name),
+	CONSTRAINT DEPARTMENT_CKEY1 UNIQUE(code),
+	CONSTRAINT DEPARTMENT_CKEY2 UNIQUE(chair),
+	CONSTRAINT DEPARTMENT_CHECK CHECK (total_staff BETWEEN 1 AND 50)
+);
+
+INSERT INTO DEPARTMENT VALUES ('School of CIT', 'SCIT', 40, 'Willy', 10000000);
+INSERT INTO DEPARTMENT VALUES ('School of Physics', 'SP', 20, 'Peter', 5000000);
+INSERT INTO DEPARTMENT VALUES ('School of Arts', 'SA', 30, NULL, 7000000);
+INSERT INTO DEPARTMENT VALUES ('School of Mathematics', 'SM', 15, 'David', NULL);
+INSERT INTO DEPARTMENT VALUES ('School of Accounting', 'SACC', 40, 'Jennie', NULL);
+
+CREATE TABLE COURSE (
+	cnum		CHAR(7)			NOT NULL,
+	title		VARCHAR(100)	NOT NULL,
+	credits		DECIMAL(2)		NOT NULL,
+	name	VARCHAR(50)		NULL,
+	CONSTRAINT COURSE_PKEY PRIMARY KEY(cnum),
+	CONSTRAINT COURSE_CHECK CHECK (credits IN (6, 12)),
+	CONSTRAINT COURSE_FKEY FOREIGN KEY(name) REFERENCES DEPARTMENT(name) 
+);
+
+INSERT INTO COURSE VALUES ('CSIT115', 'Database management and security', 6, 'School of CIT');
+INSERT INTO COURSE VALUES ('MATH101', 'Theorem of fraction', 6, 'School of Mathematics');
+INSERT INTO COURSE VALUES ('CSCI235', 'Database systems', 6, 'School of CIT');
+INSERT INTO COURSE VALUES ('PHY999', 'Project', 12, 'School of Physics');
+INSERT INTO COURSE VALUES ('ART100', 'View of arts', 6, 'School of Arts');
+INSERT INTO COURSE VALUES ('PPP100', 'Protocol', 6, NULL);
+
+SELECT * FROM DEPARTMENT;
+SELECT * FROM COURSE;
+
+DROP TABLE COURSE;
+DROP TABLE DEPARTMENT;
+
